@@ -35,14 +35,14 @@ public class AlbumService {
             throw new EntityNotFoundException(String.format("앨범 아이디 %d로 조회되지 않았습니다", albumId));
         }
     }
-    public AlbumDto findByAlbumName(String albumName){
-        Optional<Album> findAlbum = albumRepository.findByAlbumName(albumName);
-        if (findAlbum.isPresent()){
-            AlbumDto albumDto = AlbumMapper.convertToDto(findAlbum.get());
-            return albumDto;
-        } else {
-            throw new EntityNotFoundException(String.format("앨범 이름 %d로 조회되지 않았습니다", albumName));
-        }
-    }
+//    public AlbumDto findByAlbumName(String albumName){
+//        Optional<Album> findAlbum = albumRepository.findByAlbumName(albumName);
+//        if (findAlbum.isPresent()){
+//            AlbumDto albumDto = AlbumMapper.convertToDto(findAlbum.get());
+//            return albumDto;
+//        } else {
+//            throw new EntityNotFoundException(String.format("앨범 이름 %d로 조회되지 않았습니다", albumName));
+//        }
+//    }
 
 }

@@ -17,10 +17,5 @@ public class AlbumDto {
     LocalDateTime createdAt;
 
 
-    public AlbumDto(Long albumId, String albumName,LocalDateTime createdAt ) {
-        this.albumId = albumId;
-        this.albumName = albumName;
-        this.createdAt = createdAt;
 
-    }
 }

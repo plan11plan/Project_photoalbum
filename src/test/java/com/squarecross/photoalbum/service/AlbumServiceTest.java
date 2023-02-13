@@ -29,16 +29,15 @@ class AlbumServiceTest {
         assertThat(findAlbum.getAlbumName()).isEqualTo("테스트");
     }
 
-//    @Test
-//    @DisplayName("앨범이름으로 조회")
-//    void getAlbumByAlbumName() {
-//        Album album = new Album();
-//        album.setAlbumName("테스트");
-//        albumRepository.save(album);
-//
-//        AlbumDto findAlbum = albumService.findByAlbumName("테스트");
-//        assertThat(findAlbum).isEqualTo(album);
-//        assertThat(findAlbum.getAlbumName()).isEqualTo("테스트");
-//    }
+    @Test
+    @DisplayName("앨범이름으로 조회")
+    void getAlbumByAlbumName() {
+        Album album = new Album();
+        album.setAlbumName("테스트");
+        albumRepository.save(album);
+
+        AlbumDto findAlbum = albumService.findByAlbumName("테스트");
+        assertThat(findAlbum.getAlbumName()).isEqualTo("테스트");
+    }
 
 }
