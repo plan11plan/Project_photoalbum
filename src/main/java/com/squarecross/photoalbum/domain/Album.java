@@ -17,7 +17,7 @@ public class Album {
     @Column(name="album_id")
     private long id;
 
-    private String AlbumName;
+    private String albumName;
 
     private LocalDateTime created_at;
 

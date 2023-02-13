@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AlbumRepository extends JpaRepository<Album, Long> {////123
+public interface AlbumRepository extends JpaRepository<Album, Long> {
+
+     Album findByAlbumName(String albumName);
 }
