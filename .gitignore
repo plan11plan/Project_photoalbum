@@ -1,3 +1,8 @@
+#etc
+.gradle
+build
+.idea
+#
 HELP.md
 .gradle
 build/
