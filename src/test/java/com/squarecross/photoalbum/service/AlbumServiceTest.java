@@ -100,6 +100,7 @@ class AlbumServiceTest {
 
         AlbumDto albumDto11 = AlbumMapper.convertToDto(album);
         System.out.println(albumDto11.getAlbumName());
+        albumRepository.delete(album);
 
 
     }
