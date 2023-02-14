@@ -3,12 +3,12 @@ package com.squarecross.photoalbum.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import net.bytebuddy.asm.Advice;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,11 +26,11 @@ public class Album {
 
     @Column(name="created_at", unique = false, nullable = true)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "album")
-    private List<Photo> photos = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "album")
+    private List<Photo> photos;
+
     //user id (FK)
     public Album(){};
 
@@ -50,11 +50,11 @@ public class Album {
         this.albumName = albumName;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 

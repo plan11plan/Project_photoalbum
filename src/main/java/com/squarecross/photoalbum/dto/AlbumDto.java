@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class AlbumDto {
     Long albumId;
     String albumName;
     int count;
-    LocalDateTime createdAt;
+    Date createdAt;
 
 
 
