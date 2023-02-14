@@ -1,13 +1,10 @@
 package com.squarecross.photoalbum.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "album_id", unique = true, nullable = false)
-    private long albumId;
+    private Long albumId;
     @Column(name = "album_name", unique = false, nullable = false)
     private String albumName;
 
@@ -34,11 +31,11 @@ public class Album {
     //user id (FK)
     public Album(){};
 
-    public long getAlbumId() {
+    public Long getAlbumId() {
         return albumId;
     }
 
-    public void setAlbumId(long albumId) {
+    public void setAlbumId(Long albumId) {
         this.albumId = albumId;
     }
 
@@ -58,5 +55,11 @@ public class Album {
         this.createdAt = createdAt;
     }
 
+    public List<Photo> getPhotos() {
+        return photos;
+    }
 
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
+    }
 }

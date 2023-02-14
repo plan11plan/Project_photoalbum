@@ -1,8 +1,10 @@
 package com.squarecross.photoalbum.service;
 
+import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.AlbumDto;
+import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -72,5 +80,27 @@ class AlbumServiceTest {
         AlbumDto findAlbum = albumService.getAlbum(savedAlbum.getAlbumId());
         //then
         System.out.println("카운트 = "+ findAlbum.getCount());
+    }
+    @Test
+    void test1() throws IOException {
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumId(1L);
+        albumDto.setAlbumName("앨범1");
+        Album album = AlbumMapper.convertToModel(albumDto);
+        albumRepository.save(album);
+        System.out.println("albumId ="+album.getAlbumId());
+
+        Path directories = Files.createDirectories(Paths.get(
+                Constants.PATH_PREFIX + "/photos/original/" + album.getAlbumId()));
+        Path directories1 = Files.createDirectories(Paths.get(
+                Constants.PATH_PREFIX + "/photos/thumb/" + album.getAlbumId()));
+        System.out.println("directories"+directories );
+        System.out.println("directories1"+directories1 );
+        System.out.println("앨범이름 = "+album.getAlbumName());
+
+        AlbumDto albumDto11 = AlbumMapper.convertToDto(album);
+        System.out.println(albumDto11.getAlbumName());
+
+
     }
 }
