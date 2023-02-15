@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -71,17 +72,35 @@ public class AlbumService {
      * albums에 있는 각 앨범을 하나씩 하나씩 `AlbumMapper.converToDto`로 변화시킨 이후 리스트형태로 다시 모읍니다
      * `collect(Collectors.toList())`.
      */
-    public List<AlbumDto> getAlbumList(String keyword, String sort) {
-        List<Album> albums;
+    public List<AlbumDto> getAlbumList(String keyword, String sort, String orderBy) {
+        List<Album> albums = new ArrayList<>();
         if (Objects.equals(sort, "byName")){
-            albums = albumRepository.findByAlbumNameContainingOrderByAlbumNameAsc(keyword);
-        } else if (Objects.equals(sort, "byDate")) {
-            albums = albumRepository.findByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+            if(Objects.equals(orderBy, "asc")) {
+                albums = albumRepository.findByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+            }
+            else if(Objects.equals(orderBy,"desc")) {
+                albums = albumRepository.findByAlbumNameContainingOrderByAlbumNameDesc(keyword);
+            }
+        }
+        else if (Objects.equals(sort, "byDate")) {
+            if(Objects.equals(orderBy,"desc")) {
+                albums = albumRepository.findByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+            }
+            else if(Objects.equals(orderBy,"asc")){
+                albums = albumRepository.findByAlbumNameContainingOrderByCreatedAtAsc(keyword);
+            }
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
         }
-
+        //
         List<AlbumDto> albumDtos = AlbumMapper.convertToDtoList(albums);
+        //
+        /**
+         * -`map(Photo::getThumbUrl)` ****썸네일 URL 추출.
+         * -`map(c -> Constants.PATH_PREFIX + c)` 프로젝트 폴더 디렉토리까지 합쳐서 Full 이미지 Path 로 만들기.
+         * - map안에 있는 내용은 람다 함수인데, c는 stream에서 넘어오는 각 string 이고 → 우측에 있는 구현내용은 c를 사용해서 실행할 내용입니다.
+         * -`collect(Collectors.toList())` 하나씩 수정을 거쳐서 들어오는 String을 List로 모읍니다.
+         */
         for(AlbumDto albumDto : albumDtos){
             List<Photo> top4 = photoRepository.findTop4ByAlbum_AlbumIdOrderByUploadedAtDesc(albumDto.getAlbumId());
             albumDto.setThumbUrls(top4.stream().map(Photo::getThumbUrl).map(c -> Constants.PATH_PREFIX + c).collect(Collectors.toList()));

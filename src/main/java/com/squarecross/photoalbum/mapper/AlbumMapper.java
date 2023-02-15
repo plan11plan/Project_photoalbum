@@ -26,5 +26,6 @@ public class AlbumMapper {
     }
     public static List<AlbumDto> convertToDtoList(List<Album> albums) {
         return albums.stream().map(AlbumMapper::convertToDto).collect(Collectors.toList());
+        /** 요소들을 Dto로 가공하였다면 collect 를 이용하여 결과를 리턴받을 수 있음 */
     }
 }

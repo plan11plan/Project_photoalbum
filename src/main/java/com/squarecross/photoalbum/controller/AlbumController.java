@@ -36,11 +36,12 @@ public class AlbumController {
         return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value="", method = RequestMethod.GET)
-    public ResponseEntity<List<AlbumDto>>
-    getAlbumList(@RequestParam(value="keyword", required=false, defaultValue="") final String keyword,
-                 @RequestParam(value="sort", required=false, defaultValue = "byDate") final String sort) {
-        List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort);
+    @GetMapping
+    public ResponseEntity<List<AlbumDto>> getAlbumList(
+            @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
+            @RequestParam(required = false, defaultValue = "byDate") final String sort,
+            @RequestParam(required = false, defaultValue = "") final String orderBy) {
+        List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
         return new ResponseEntity<>(albumDtos, HttpStatus.OK);
     }
 
