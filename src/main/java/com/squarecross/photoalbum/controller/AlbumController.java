@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.controller;
 
+import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class AlbumController {
     public ResponseEntity<AlbumDto> getAlbum(@PathVariable("albumId") final long albumId) {
         AlbumDto album = albumService.getAlbum(albumId);
         return new ResponseEntity<>(album, HttpStatus.OK);
-
     }
+
 
     /**
      * albumName 단 하나이지만, AlbumDto에 정의되어있는, 이미 앨범에 속해있는 필드입니다.
@@ -64,6 +65,10 @@ public class AlbumController {
      * 앨범 삭제
      */
     @DeleteMapping("/{albumId}")
-    public ResponseEntity<Void> deleteAlbum
+    public ResponseEntity<Void> deleteAlbum(@PathVariable("albumId") final long albumId){
+        Album album = albumService.findDomainAlbumById(albumId);
+        deleteAlbum(albumId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

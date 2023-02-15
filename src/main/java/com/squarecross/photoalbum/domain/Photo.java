@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,5 +32,6 @@ public class Photo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="album_id")
+    @JsonIgnore
     private Album album;
 }

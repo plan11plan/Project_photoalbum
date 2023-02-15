@@ -39,6 +39,14 @@ public class AlbumService {
             throw new EntityNotFoundException(String.format("앨범 아이디 %d로 조회되지 않았습니다", albumId));
         }
     }
+    public Album findDomainAlbumById(Long albumId){
+        Optional<Album> findAlbum = albumRepository.findById(albumId);
+        if(findAlbum.isEmpty()){
+            throw new EntityNotFoundException(String.format("앨범 아이디 %d로 조회되지 않았습니다", albumId));
+        }
+        Album album = findAlbum.get();
+        return album;
+    }
 
     public AlbumDto findByAlbumName(String albumName) {
         Optional<Album> findAlbum = albumRepository.findByAlbumName(albumName);
@@ -116,7 +124,18 @@ public class AlbumService {
         updateAlbum.setAlbumName(albumDto.getAlbumName());
         Album savedAlbum = albumRepository.save(updateAlbum);/////////
         return AlbumMapper.convertToDto(savedAlbum);
+    }
 
+    /**
+     * 앨범삭제
+     */
+    public void deleteAlbum(Long AlbumId){
+        Optional<Album> album = albumRepository.findById(AlbumId);
+        if(album.isEmpty()){
+            throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다.",AlbumId));
+        }
+        Album findAlbum = album.get();
+        albumRepository.delete(findAlbum);
     }
 
 
