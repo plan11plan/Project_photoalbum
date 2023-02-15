@@ -103,7 +103,24 @@ class AlbumServiceTest {
         AlbumDto albumDto11 = AlbumMapper.convertToDto(album);
         System.out.println(albumDto11.getAlbumName());
         albumRepository.delete(album);
+    }
+    @Test
+    @DisplayName("앨범명 수정")
+    void changeAlbumName() throws IOException {
+        // 앨범 생성
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("변경전");
+        AlbumDto album = albumService.createAlbum(albumDto);
 
+        Long albumId = album.getAlbumId(); // 생성된 앨범 아이디 추출
+        AlbumDto updateDto =new AlbumDto();
+        updateDto.setAlbumName("변경후"); // 업데이트용 Dto 생성
+        albumService.changeName(albumId, updateDto);
+
+        AlbumDto updatedDto = albumService.getAlbum(albumId);
+
+        //앨범명 변경되었는지 확인
+        assertThat("변경후").isEqualTo(updatedDto.getAlbumName());
     }
 
 }

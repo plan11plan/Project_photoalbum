@@ -54,12 +54,11 @@ public class AlbumController {
     /**
      * 앨범명 수정
      */
-//    @PutMapping("/{albumId}")
-//    public ResponseEntity<AlbumDto> updateAlbum(
-//            @PathVariable("albumId") final long albumId,
-//            @RequestBody final AlbumDto albumDto){
-//
-//    }
-
+    @PutMapping("/{albumId}")
+    public ResponseEntity<AlbumDto> updateAlbum(@PathVariable("albumId") final long albumId,
+                                                @RequestBody final AlbumDto albumDto){
+        AlbumDto res = albumService.changeName(albumId, albumDto);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 
 }
