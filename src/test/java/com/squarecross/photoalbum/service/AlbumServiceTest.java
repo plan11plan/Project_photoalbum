@@ -113,6 +113,7 @@ class AlbumServiceTest {
         AlbumDto album = albumService.createAlbum(albumDto);
 
         Long albumId = album.getAlbumId(); // 생성된 앨범 아이디 추출
+        System.out.println("앨범 이름:"+albumService.getAlbum(albumId).getAlbumName());
         AlbumDto updateDto =new AlbumDto();
         updateDto.setAlbumName("변경후"); // 업데이트용 Dto 생성
         albumService.changeName(albumId, updateDto);
@@ -121,6 +122,7 @@ class AlbumServiceTest {
 
         //앨범명 변경되었는지 확인
         assertThat("변경후").isEqualTo(updatedDto.getAlbumName());
+        System.out.println("업데이트 앨범 이름 :"+updatedDto.getAlbumName());
     }
 
 }

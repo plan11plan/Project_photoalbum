@@ -114,8 +114,8 @@ public class AlbumService {
         }
         Album updateAlbum = album.get();
         updateAlbum.setAlbumName(albumDto.getAlbumName());
-//        Album savedAlbum = albumRepository.save(updateAlbum); 이거 merge 될까봐
-        return AlbumMapper.convertToDto(updateAlbum);
+        Album savedAlbum = albumRepository.save(updateAlbum);/////////
+        return AlbumMapper.convertToDto(savedAlbum);
 
     }
 
