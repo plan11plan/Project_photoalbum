@@ -16,10 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -106,6 +103,20 @@ public class AlbumService {
             albumDto.setThumbUrls(top4.stream().map(Photo::getThumbUrl).map(c -> Constants.PATH_PREFIX + c).collect(Collectors.toList()));
         }
         return albumDtos;
+    }
+    /**
+     * 앨범명 수정
+     */
+    public AlbumDto changeName(Long AlbumId,AlbumDto albumDto){
+        Optional<Album> album = this.albumRepository.findById(AlbumId);
+        if(album.isEmpty()){
+            throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", AlbumId));
+        }
+        Album updateAlbum = album.get();
+        updateAlbum.setAlbumName(albumDto.getAlbumName());
+//        Album savedAlbum = albumRepository.save(updateAlbum); 이거 merge 될까봐
+        return AlbumMapper.convertToDto(updateAlbum);
+
     }
 
 

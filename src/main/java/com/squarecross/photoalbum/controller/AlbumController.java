@@ -30,12 +30,18 @@ public class AlbumController {
      * 이부분은 개개인마다 다르게 할 수 있지만 중요한건 고민을 충분히 하고 스스로 판단하기에 최선의 선택을 하는거입니다.
      */
 
+    /**
+     * 앨범생성
+     */
     @PostMapping
     public ResponseEntity<AlbumDto> createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
         AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
         return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
     }
 
+    /**
+     * 앨범 목록 조회
+     */
     @GetMapping
     public ResponseEntity<List<AlbumDto>> getAlbumList(
             @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
@@ -44,5 +50,16 @@ public class AlbumController {
         List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
         return new ResponseEntity<>(albumDtos, HttpStatus.OK);
     }
+
+    /**
+     * 앨범명 수정
+     */
+//    @PutMapping("/{albumId}")
+//    public ResponseEntity<AlbumDto> updateAlbum(
+//            @PathVariable("albumId") final long albumId,
+//            @RequestBody final AlbumDto albumDto){
+//
+//    }
+
 
 }
