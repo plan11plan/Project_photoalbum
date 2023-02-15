@@ -66,8 +66,7 @@ public class AlbumController {
      */
     @DeleteMapping("/{albumId}")
     public ResponseEntity<Void> deleteAlbum(@PathVariable("albumId") final long albumId){
-        Album album = albumService.findDomainAlbumById(albumId);
-        deleteAlbum(album.getAlbumId());
+        albumService.deleteAlbum(albumId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
