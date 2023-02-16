@@ -11,7 +11,7 @@ import java.util.Date;
 @ToString
 public class PhotoDto {
     private Long photoId;
-    private Long albumId;
+//    private Long albumId;
     private String fileName;
     private String originalUrl;
     private Date uploadedAt;
