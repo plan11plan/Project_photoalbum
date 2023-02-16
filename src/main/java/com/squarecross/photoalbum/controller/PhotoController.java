@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,8 +39,13 @@ public class PhotoController {
     @PostMapping("")
     public ResponseEntity<List<PhotoDto>> uploadPhotos(
             @PathVariable("albumId") final Long albumId,
-            @RequestParam("photos") MultipartFile[] files){
-
+            @RequestParam("photos") MultipartFile[] files) throws IOException {
+        List<PhotoDto> photos = new ArrayList<>();
+        for (MultipartFile file : files) {
+            PhotoDto photoDto = photoService.savePhoto(file, albumId);
+            photos.add(photoDto);
+        }
+        return new ResponseEntity<>(photos, HttpStatus.OK);
     }
 
 
