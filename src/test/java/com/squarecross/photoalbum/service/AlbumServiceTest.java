@@ -7,10 +7,8 @@ import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -59,8 +54,9 @@ class AlbumServiceTest {
         AlbumDto findAlbum = albumService.findByAlbumName("테스트");
         assertThat(findAlbum.getAlbumName()).isEqualTo("테스트");
     }
+
     @Test
-    void testPhotoCount(){
+    void testPhotoCount() {
 
         //given
         Album album = new Album();
@@ -84,8 +80,9 @@ class AlbumServiceTest {
         //when
         AlbumDto findAlbum = albumService.getAlbum(savedAlbum.getAlbumId());
         //then
-        System.out.println("카운트 = "+ findAlbum.getCount());
+        System.out.println("카운트 = " + findAlbum.getCount());
     }
+
     @Test
     void test1() throws IOException {
         AlbumDto albumDto = new AlbumDto();
@@ -93,20 +90,21 @@ class AlbumServiceTest {
         albumDto.setAlbumName("앨범1");
         Album album = AlbumMapper.convertToModel(albumDto);
         albumRepository.save(album);
-        System.out.println("albumId ="+album.getAlbumId());
+        System.out.println("albumId =" + album.getAlbumId());
 
         Path directories = Files.createDirectories(Paths.get(
                 Constants.PATH_PREFIX + "/photos/original/" + album.getAlbumId()));
         Path directories1 = Files.createDirectories(Paths.get(
                 Constants.PATH_PREFIX + "/photos/thumb/" + album.getAlbumId()));
-        System.out.println("directories"+directories );
-        System.out.println("directories1"+directories1 );
-        System.out.println("앨범이름 = "+album.getAlbumName());
+        System.out.println("directories" + directories);
+        System.out.println("directories1" + directories1);
+        System.out.println("앨범이름 = " + album.getAlbumName());
 
         AlbumDto albumDto11 = AlbumMapper.convertToDto(album);
         System.out.println(albumDto11.getAlbumName());
         albumRepository.delete(album);
     }
+
     @Test
     @DisplayName("앨범명 수정")
     void changeAlbumName() throws IOException {
@@ -116,8 +114,8 @@ class AlbumServiceTest {
         AlbumDto album = albumService.createAlbum(albumDto);
 
         Long albumId = album.getAlbumId(); // 생성된 앨범 아이디 추출
-        System.out.println("앨범 이름:"+albumService.getAlbum(albumId).getAlbumName());
-        AlbumDto updateDto =new AlbumDto();
+        System.out.println("앨범 이름:" + albumService.getAlbum(albumId).getAlbumName());
+        AlbumDto updateDto = new AlbumDto();
         updateDto.setAlbumName("변경후"); // 업데이트용 Dto 생성
         albumService.changeName(albumId, updateDto);
 
@@ -125,8 +123,9 @@ class AlbumServiceTest {
 
         //앨범명 변경되었는지 확인
         assertThat("변경후").isEqualTo(updatedDto.getAlbumName());
-        System.out.println("업데이트 앨범 이름 :"+updatedDto.getAlbumName());
+        System.out.println("업데이트 앨범 이름 :" + updatedDto.getAlbumName());
     }
+
     @Test
     @DisplayName("앨범 삭제")
     void deleteAlbum() throws IOException {
@@ -136,13 +135,13 @@ class AlbumServiceTest {
         Album savedAlbum = albumRepository.save(album);
         Long albumId = album.getAlbumId();
         System.out.println(albumId);
-        System.out.println("꺼낸 앨범 이름 ="+savedAlbum.getAlbumName());
+        System.out.println("꺼낸 앨범 이름 =" + savedAlbum.getAlbumName());
         //앨범삭제
         albumService.deleteAlbum(savedAlbum.getAlbumId());
-       // 삭제한 앨범 조회
+        // 삭제한 앨범 조회
         try {
             Album domainAlbumById = albumService.findDomainAlbumById(albumId);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             System.out.println("javax.persistence.EntityNotFoundException: 앨범 아이디 27로 조회되지 않았습니다.");
         }
     }
