@@ -201,15 +201,15 @@ public class PhotoService {
         List<Photo> photos ;
         if (Objects.equals(sort, "byName")) {
             if (Objects.equals(orderBy, "asc")) {
-                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameAsc(albumId, keyword);
+                photos = photoRepository.fasc(albumId, keyword);
             } else {
-                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameDesc(albumId, keyword);
+                photos = photoRepository.fdesc(albumId, keyword);
             }
         } else if (Objects.equals(sort, "byDate")) {
             if (Objects.equals(orderBy, "desc")) {
-                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtDesc(albumId, keyword);
+                photos = photoRepository.tdesc(albumId, keyword);
             } else  {
-                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtAsc(albumId, keyword);
+                photos = photoRepository.tasc(albumId, keyword);
             }
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");

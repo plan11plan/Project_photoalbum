@@ -44,7 +44,7 @@ public class PhotoController {
      */
     @PostMapping("")
     public ResponseEntity<List<PhotoDto>> uploadPhotos(
-            @PathVariable("albumId") final Long albumId,
+            @PathVariable("albumId") final long albumId,
             @RequestParam("photos") MultipartFile[] files) throws IOException {
         List<PhotoDto> photos = new ArrayList<>();
         for (MultipartFile file : files) {
