@@ -24,7 +24,13 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<Photo> findByPhotoId(Long[] photoId);
 
     //앨범에 있는 사진 목록 가져오기
-    List<Photo> findPhotosByAlbum_AlbumIdContainingOrderByCreatedAtDesc(Long albumId);
 
+    List<Photo> findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtAsc(Long albumId,String fileName);
+    List<Photo> findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtDesc(Long albumId,String fileName);
+
+    List<Photo> findPhotosByAlbumIdAndFileNameContainingOrderByFileNameDesc(Long albumId,String fileName);
+
+    List<Photo> findPhotosByAlbumIdAndFileNameContainingOrderByFileNameAsc(Long albumId,String fileName);
+//    List<Album> findByAlbumNameContainingOrderByAlbumNameDesc(String albumName);
 
 }

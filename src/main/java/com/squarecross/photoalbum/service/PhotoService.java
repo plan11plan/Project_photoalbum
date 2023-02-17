@@ -4,7 +4,9 @@ package com.squarecross.photoalbum.service;
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
+import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
+import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
@@ -207,22 +209,24 @@ public class PhotoService {
 
         if (Objects.equals(sort, "byName")){
             if(Objects.equals(orderBy, "asc")) {
-                photos = photoRepository.findByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByFileNameAsc(albumId,keyword);
             }
             else if(Objects.equals(orderBy,"desc")) {
-                photos = photoRepository.findByAlbumNameContainingOrderByAlbumNameDesc(keyword);
+                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByFileNameDesc(albumId,keyword);
             }
         }
         else if (Objects.equals(sort, "byDate")) {
             if(Objects.equals(orderBy,"desc")) {
-                photos = photoRepository.findPhotosByAlbum_AlbumIdContainingOrderByCreatedAtDesc(albumId,keyword);
+                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtDesc(albumId,keyword);
             }
             else if(Objects.equals(orderBy,"asc")){
-                photos = photoRepository.findByAlbumNameContainingOrderByCreatedAtAsc(keyword);
+                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtAsc(albumId,keyword);
             }
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
         }
+        return PhotoMapper.convertToDtoList(photos);
+
     }
 
 //

@@ -130,13 +130,13 @@ public class PhotoController {
      * 사진 목록 조회
      */
     @GetMapping("")
-    public ResponseEntity<List<AlbumDto>> getList(
-            @PathVariable("albumID") final long albumId,
-            @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
+    public ResponseEntity<List<PhotoDto>> getList(
+            @PathVariable("photoID") final long photoId,
+            @RequestParam(required = false, defaultValue = "") final String keyword, //사진에 들어가는 글자
             @RequestParam(required = false, defaultValue = "byDate") final String sort,
             @RequestParam(required = false, defaultValue = "") final String orderBy) {
-        List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
-        return new ResponseEntity<>(albumDtos, HttpStatus.OK);
+        List<PhotoDto> photoDtos = photoService.getPhotoList(photoId,keyword, sort, orderBy);
+        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
     }
 
 }
