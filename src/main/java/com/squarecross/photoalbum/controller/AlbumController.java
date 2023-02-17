@@ -54,7 +54,7 @@ public class AlbumController {
     /**
      * 앨범 목록 조회
      */
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<AlbumDto>> getAlbumList(
             @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
             @RequestParam(required = false, defaultValue = "byDate") final String sort,

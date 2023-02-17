@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -52,7 +53,7 @@ public class PhotoController {
     /**
      * 사진 다운로드
      */
-    @GetMapping("/donwload")
+    @GetMapping("/download")
     public void downloadPhotos( //출력은 없습니다 void
            @RequestParam("photoIds") Long[] photoIds, //쿼리 파라미터로 다운받을 사진 Id를 받습니다.
            HttpServletResponse response){ //HttpServletResponse는 Client에서 API호출 시 생성되는 Response Servlet 이다.
@@ -63,6 +64,9 @@ public class PhotoController {
                 OutputStream outputStream = response.getOutputStream();
                 IOUtils.copy(new FileInputStream(file),outputStream);
                 outputStream.close();
+
+            }else{
+                //Zip 파일 코드 구현
 
             }
         } catch (FileNotFoundException e){
