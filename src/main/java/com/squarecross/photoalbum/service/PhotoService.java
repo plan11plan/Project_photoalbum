@@ -198,18 +198,17 @@ public class PhotoService {
         if (album.isEmpty()) {
             throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", albumId));
         }
-        List<Photo> photos = new ArrayList<>();
-
+        List<Photo> photos ;
         if (Objects.equals(sort, "byName")) {
             if (Objects.equals(orderBy, "asc")) {
                 photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameAsc(albumId, keyword);
-            } else if (Objects.equals(orderBy, "desc")) {
+            } else {
                 photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameDesc(albumId, keyword);
             }
         } else if (Objects.equals(sort, "byDate")) {
             if (Objects.equals(orderBy, "desc")) {
                 photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtDesc(albumId, keyword);
-            } else if (Objects.equals(orderBy, "asc")) {
+            } else  {
                 photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtAsc(albumId, keyword);
             }
         } else {

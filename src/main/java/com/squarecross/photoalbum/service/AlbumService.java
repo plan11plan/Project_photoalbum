@@ -80,17 +80,17 @@ public class AlbumService {
      * `collect(Collectors.toList())`.
      */
     public List<AlbumDto> getAlbumList(String keyword, String sort, String orderBy) {
-        List<Album> albums = new ArrayList<>();
+        List<Album> albums ;
         if (Objects.equals(sort, "byName")) {
             if (Objects.equals(orderBy, "asc")) {
                 albums = albumRepository.findByAlbumNameContainingOrderByAlbumNameAsc(keyword);
-            } else if (Objects.equals(orderBy, "desc")) {
+            } else  {//if (Objects.equals(orderBy, "desc"))
                 albums = albumRepository.findByAlbumNameContainingOrderByAlbumNameDesc(keyword);
             }
         } else if (Objects.equals(sort, "byDate")) {
             if (Objects.equals(orderBy, "desc")) {
                 albums = albumRepository.findByAlbumNameContainingOrderByCreatedAtDesc(keyword);
-            } else if (Objects.equals(orderBy, "asc")) {
+            } else  {//if (Objects.equals(orderBy, "asc")
                 albums = albumRepository.findByAlbumNameContainingOrderByCreatedAtAsc(keyword);
             }
         } else {
@@ -99,6 +99,7 @@ public class AlbumService {
         //
         List<AlbumDto> albumDtos = AlbumMapper.convertToDtoList(albums);
         //
+
         /**
          * -`map(Photo::getThumbUrl)` ****썸네일 URL 추출.
          * -`map(c -> Constants.PATH_PREFIX + c)` 프로젝트 폴더 디렉토리까지 합쳐서 Full 이미지 Path 로 만들기.
