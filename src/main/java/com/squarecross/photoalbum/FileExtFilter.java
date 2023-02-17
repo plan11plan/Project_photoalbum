@@ -7,12 +7,10 @@ import java.io.IOException;
 
 public class FileExtFilter {
     /**
-
      * 파일의 확장자를 체크하여 필터링된 확장자를 포함한 파일인 경우에 예외를 발생한다.
-
+     *
      * @param file
-
-     * */
+     */
 
     public static void badFileExtIsReturnException(MultipartFile file) {
 
@@ -22,8 +20,7 @@ public class FileExtFilter {
 
                 fileName.length());
 
-        final String[] BAD_EXTENSION = { "jsp", "php", "asp", "html", "perl" };
-
+        final String[] BAD_EXTENSION = {"jsp", "php", "asp", "html", "perl"};
 
 
         try {
@@ -51,14 +48,11 @@ public class FileExtFilter {
     }
 
 
-
     /**
-
      * 파일의 확장자를 체크하여 필터링된 확장자를 포함한 파일인 경우에 true를 리턴한다.
-
+     *
      * @param file
-
-     * */
+     */
 
     public static boolean badFileExtIsReturnBoolean(MultipartFile file) {
 
@@ -68,8 +62,7 @@ public class FileExtFilter {
 
                 fileName.length());
 
-        final String[] BAD_EXTENSION = { "jsp", "php", "asp", "html", "perl" };
-
+        final String[] BAD_EXTENSION = {"jsp", "php", "asp", "html", "perl"};
 
 
         int len = BAD_EXTENSION.length;

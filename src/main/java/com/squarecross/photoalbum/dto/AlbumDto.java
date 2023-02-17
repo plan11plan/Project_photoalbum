@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
 public class AlbumDto {
 
     Long albumId;
+    @NotEmpty
     String albumName;
+
     int count;
     Date createdAt;
     private List<String> thumbUrls;
-
-
 
 
 }

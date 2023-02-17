@@ -72,6 +72,7 @@ public class PhotoService {
      * 사진 업로드
      */
     public PhotoDto savePhoto(MultipartFile file, Long albumId) throws IOException {
+        /** 이미지 검증 로직 */
 
         badFileExtIsReturnException(file);
 

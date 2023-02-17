@@ -4,16 +4,21 @@ import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/albums")
 @RequiredArgsConstructor
+@Slf4j
 public class AlbumController {
     private final AlbumService albumService;
 
@@ -35,7 +40,13 @@ public class AlbumController {
      * 앨범생성
      */
     @PostMapping
-    public ResponseEntity<AlbumDto> createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
+    public ResponseEntity<?> createAlbum(@Valid @RequestBody final AlbumDto albumDto, BindingResult bindingResult)
+            throws IOException {
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return new ResponseEntity<>((Map<BindingResult, String>) bindingResult,HttpStatus.BAD_REQUEST);
+
+        }
         AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
         return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
     }
@@ -57,7 +68,7 @@ public class AlbumController {
      */
     @PutMapping("/{albumId}")
     public ResponseEntity<AlbumDto> updateAlbum(@PathVariable("albumId") final long albumId,
-                                                @RequestBody final AlbumDto albumDto){
+                                                @Valid @RequestBody final AlbumDto albumDto){
         AlbumDto result = albumService.changeName(albumId, albumDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
