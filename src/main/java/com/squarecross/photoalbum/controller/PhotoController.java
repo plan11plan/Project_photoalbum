@@ -1,6 +1,7 @@
 package com.squarecross.photoalbum.controller;
 
 
+import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import com.squarecross.photoalbum.service.PhotoService;
@@ -125,6 +126,17 @@ public class PhotoController {
         }
 
     }
-
+    /**
+     * 사진 목록 조회
+     */
+    @GetMapping("")
+    public ResponseEntity<List<AlbumDto>> getList(
+            @PathVariable("albumID") final long albumId,
+            @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
+            @RequestParam(required = false, defaultValue = "byDate") final String sort,
+            @RequestParam(required = false, defaultValue = "") final String orderBy) {
+        List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
+        return new ResponseEntity<>(albumDtos, HttpStatus.OK);
+    }
 
 }

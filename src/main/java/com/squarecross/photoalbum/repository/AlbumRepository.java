@@ -21,4 +21,5 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     //앨범명검색 + 앨범명 Z-A 정렬:
     List<Album> findByAlbumNameContainingOrderByAlbumNameDesc(String albumName);
+
 }

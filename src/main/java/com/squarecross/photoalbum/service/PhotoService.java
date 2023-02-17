@@ -26,8 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
@@ -195,6 +194,35 @@ public class PhotoService {
         }).collect(Collectors.toList());
         return fileList;
 
+    }
+    /**
+     * 사진 목록 불러오기
+     */
+    public List<PhotoDto> getPhotoList(Long albumId,String keyword, String sort, String orderBy){
+        Optional<Album> album = albumRepository.findById(albumId);
+        if(album.isEmpty()){
+            throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", albumId));
+        }
+        List<Photo> photos = new ArrayList<>();
+
+        if (Objects.equals(sort, "byName")){
+            if(Objects.equals(orderBy, "asc")) {
+                photos = photoRepository.findByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+            }
+            else if(Objects.equals(orderBy,"desc")) {
+                photos = photoRepository.findByAlbumNameContainingOrderByAlbumNameDesc(keyword);
+            }
+        }
+        else if (Objects.equals(sort, "byDate")) {
+            if(Objects.equals(orderBy,"desc")) {
+                photos = photoRepository.findPhotosByAlbum_AlbumIdContainingOrderByCreatedAtDesc(albumId,keyword);
+            }
+            else if(Objects.equals(orderBy,"asc")){
+                photos = photoRepository.findByAlbumNameContainingOrderByCreatedAtAsc(keyword);
+            }
+        } else {
+            throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
+        }
     }
 
 //

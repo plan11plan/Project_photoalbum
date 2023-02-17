@@ -5,6 +5,7 @@ import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.AlbumDto;
+import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
@@ -137,6 +138,7 @@ public class AlbumService {
         Album findAlbum = album.get();
         albumRepository.delete(findAlbum);
     }
+
 
 
 }

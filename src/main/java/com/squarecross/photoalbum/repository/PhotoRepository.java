@@ -4,7 +4,9 @@ import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,9 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<Photo> findTop4ByAlbum_AlbumIdOrderByUploadedAtDesc(Long AlbumId);
     Optional<Photo> findByFileNameAndAlbum_AlbumId(String photoName, Long albumId);
     List<Photo> findByPhotoId(Long[] photoId);
+
+    //앨범에 있는 사진 목록 가져오기
+    List<Photo> findPhotosByAlbum_AlbumIdContainingOrderByCreatedAtDesc(Long albumId);
 
 
 }
