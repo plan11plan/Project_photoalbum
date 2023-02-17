@@ -4,15 +4,11 @@ package com.squarecross.photoalbum.service;
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
-import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
-import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
-import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.engine.jdbc.StreamUtils;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,16 +19,12 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
-import static com.squarecross.photoalbum.FileExtFilter.badFileExtIsReturnBoolean;
 import static com.squarecross.photoalbum.FileExtFilter.badFileExtIsReturnException;
 
 @Service
@@ -197,30 +189,28 @@ public class PhotoService {
         return fileList;
 
     }
+
     /**
      * 사진 목록 불러오기
      */
-    public List<PhotoDto> getPhotoList(Long albumId,String keyword, String sort, String orderBy){
+    public List<PhotoDto> getPhotoList(Long albumId, String keyword, String sort, String orderBy) {
         Optional<Album> album = albumRepository.findById(albumId);
-        if(album.isEmpty()){
+        if (album.isEmpty()) {
             throw new NoSuchElementException(String.format("Album ID '%d'가 존재하지 않습니다", albumId));
         }
         List<Photo> photos = new ArrayList<>();
 
-        if (Objects.equals(sort, "byName")){
-            if(Objects.equals(orderBy, "asc")) {
-                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByFileNameAsc(albumId,keyword);
+        if (Objects.equals(sort, "byName")) {
+            if (Objects.equals(orderBy, "asc")) {
+                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameAsc(albumId, keyword);
+            } else if (Objects.equals(orderBy, "desc")) {
+                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByFileNameDesc(albumId, keyword);
             }
-            else if(Objects.equals(orderBy,"desc")) {
-                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByFileNameDesc(albumId,keyword);
-            }
-        }
-        else if (Objects.equals(sort, "byDate")) {
-            if(Objects.equals(orderBy,"desc")) {
-                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtDesc(albumId,keyword);
-            }
-            else if(Objects.equals(orderBy,"asc")){
-                photos = photoRepository.findPhotosByAlbumIdAndFileNameContainingOrderByCreatedAtAsc(albumId,keyword);
+        } else if (Objects.equals(sort, "byDate")) {
+            if (Objects.equals(orderBy, "desc")) {
+                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtDesc(albumId, keyword);
+            } else if (Objects.equals(orderBy, "asc")) {
+                photos = photoRepository.findPhotosByAlbum_AlbumIdAndFileNameContainingOrderByUploadedAtAsc(albumId, keyword);
             }
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
