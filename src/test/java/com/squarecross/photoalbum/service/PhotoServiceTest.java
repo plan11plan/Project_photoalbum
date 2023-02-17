@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.util.List;
+
 @SpringBootTest
 @Transactional
 public class PhotoServiceTest {
@@ -24,5 +27,16 @@ public class PhotoServiceTest {
 
         PhotoDto photo = photoService.getPhoto(albumId, photoId);
         System.out.println(photo);
+    }
+    @Test
+    @DisplayName("여러 아이디로 사진들 한번에 조회")
+    void getImageFiles() {
+        long[] photoIds = {1, 2, 3};
+        Long[] photoIdsLong = new Long[photoIds.length];
+        for (int i = 0; i < photoIds.length; i++) {
+            photoIdsLong[i] = Long.valueOf(photoIds[i]);
+        }
+        List<File> imageFiles = photoService.getImageFiles(photoIdsLong);
+        System.out.println(imageFiles);
     }
 }
