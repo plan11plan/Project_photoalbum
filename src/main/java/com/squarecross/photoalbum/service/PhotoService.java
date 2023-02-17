@@ -8,6 +8,7 @@ import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
+import com.sun.tools.jconsole.JConsoleContext;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
@@ -156,5 +157,24 @@ public class PhotoService {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
+    /**
+     * 사진 다운로드
+     * 서비스 메서드는 개별 이미지 아이디를 받아 이미지 파일을 반환합니다.
+     * 서비스에서 파일을 집파일로 묶어서 Client에 전달하는건 Controller에서 진행합니다.
+     */
+    /** 의사 코드
+     * 1. 입력된 이미지 아이디로 DB를 조회합니다.
+     *    a. 없으면 Exception을 던집니다.
+     * 2. 프로젝트 경로를 앞에 붙여서 디렉토리 내에서 사진을 불러옵니다.
+     * 3. 파일을 Controller로 출력합니다.
+     */
+    public File getImageFile(Long photoId){
+        Optional<Photo> result = photoRepository.findById(photoId);
+        if(result.isEmpty()){
+            throw new EntityNotFoundException(String.format("사진을 ID %d를 찾을 수 없습니다."));
+        }
+        return new File(Constants.PATH_PREFIX + result.get().getOriginalUrl());
+    }
+
 //
 }
