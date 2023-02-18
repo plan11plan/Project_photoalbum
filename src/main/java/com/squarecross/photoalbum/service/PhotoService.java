@@ -245,5 +245,33 @@ public class PhotoService {
         List<PhotoDto> results = getPhotoListByAlbumId(albumId);
         return results;
     }
+    /**
+     * 사진 앪범 옮기기
+     */
+    public List<PhotoDto> movePhoto(Long fromAlbumId,Long toAlbumId,List<Long> photoIds){
+        Optional<Album> findFromAlbum = albumRepository.findById(fromAlbumId);
+        if(findFromAlbum.isEmpty()){
+            throw new NoSuchElementException(String.format("fromAlbum Id'%d'가 존재하지 않습니다.", fromAlbumId));
+        }
+        Album fromAlbum = findFromAlbum.get();
+
+        Optional<Album> findToAlbum = albumRepository.findById(toAlbumId);
+        if(findToAlbum.isEmpty()){
+            throw new NoSuchElementException(String.format("toAlbum Id'%d'가 존재하지 않습니다.",toAlbumId));
+        }
+        Album toAlbum = findToAlbum.get();
+
+        for (Long photoId : photoIds) {
+            Optional<Photo> byId = photoRepository.findById(photoId);
+            if(byId.isEmpty()){
+                throw new NoSuchElementException(String.format("photoId Id'%d'가 존재하지 않습니다.",photoId));
+            }
+            Photo photo = byId.get();
+            photo.setAlbum(toAlbum);
+        }
+        List<Photo> byPhotoIdList = photoRepository.findByPhotoIdList(photoIds);
+        List<PhotoDto> photoDtos = PhotoMapper.convertToDtoList(byPhotoIdList);
+        return photoDtos;
+    }
 //
 }

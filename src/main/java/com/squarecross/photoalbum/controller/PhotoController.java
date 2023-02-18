@@ -1,6 +1,7 @@
 package com.squarecross.photoalbum.controller;
 
 
+import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import com.squarecross.photoalbum.service.PhotoService;
@@ -152,4 +153,16 @@ public class PhotoController {
     /**
      * 사진 옮기기
      */
+    @PutMapping("/move")
+    public ResponseEntity<List<PhotoDto>> movePhotos(
+            @PathVariable("albumId") final Long albumId,
+            @RequestParam("fromAlbumId") final Long fromAlbumId,
+            @RequestParam("toAlbumId") final Long toAlbumId,
+            @RequestParam("photoIds") final List<Long> photoIds) {
+
+        List<PhotoDto> photoDtos = photoService.movePhoto(fromAlbumId, toAlbumId, photoIds);
+        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
+
+    }
+
 }
