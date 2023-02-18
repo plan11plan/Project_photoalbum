@@ -2,6 +2,7 @@ package com.squarecross.photoalbum.repository;
 
 import com.squarecross.photoalbum.domain.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,7 +22,8 @@ public interface PhotoRepository extends JpaRepository<Photo, Long>,PhotoReposit
     Optional<Photo> findByFileNameAndAlbum_AlbumId(String photoName, Long albumId);
 
     List<Photo> findByPhotoId(Long[] photoId);
-    List<Photo> findByPhotoIdList(List<Long> photoId);
+    @Query("select p from Photo p where p.photoId in :photoId")
+    List<Photo> findPhotosByPhotoIdIn(List<Long> photoId);
 
 //    //앨범에 있는 사진 목록 가져오기
 //

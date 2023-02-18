@@ -269,7 +269,7 @@ public class PhotoService {
             Photo photo = byId.get();
             photo.setAlbum(toAlbum);
         }
-        List<Photo> byPhotoIdList = photoRepository.findByPhotoIdList(photoIds);
+        List<Photo> byPhotoIdList = photoRepository.findPhotosByPhotoIdIn(photoIds);
         List<PhotoDto> photoDtos = PhotoMapper.convertToDtoList(byPhotoIdList);
         return photoDtos;
     }
