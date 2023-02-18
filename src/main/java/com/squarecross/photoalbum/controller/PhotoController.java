@@ -127,16 +127,21 @@ public class PhotoController {
 
     }
     /**
-     * 사진 목록 조회
+     * 사진 목록 불러오기
      */
     @GetMapping("")
     public ResponseEntity<List<PhotoDto>> getList(
-            @PathVariable("photoID") final long photoId,
+            @PathVariable("albumId") final long albumId,
             @RequestParam(required = false, defaultValue = "") final String keyword, //사진에 들어가는 글자
             @RequestParam(required = false, defaultValue = "byDate") final String sort,
             @RequestParam(required = false, defaultValue = "") final String orderBy) {
-        List<PhotoDto> photoDtos = photoService.getPhotoList(photoId,keyword, sort, orderBy);
+        List<PhotoDto> photoDtos = photoService.getPhotoList(albumId,keyword, sort, orderBy);
         return new ResponseEntity<>(photoDtos, HttpStatus.OK);
     }
-
+    @GetMapping("/downloads")
+    public long downloadPhotos( //출력은 없습니다 void
+                                @RequestParam("photoIds") Long[] photoIds //쿼리 파라미터로 다운받을 사진 Id를 받습니다.
+    ) {
+        return photoIds.length;
+    }
 }

@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @Transactional
@@ -39,4 +41,5 @@ public class PhotoServiceTest {
         List<File> imageFiles = photoService.getImageFiles(photoIdsLong);
         System.out.println(imageFiles);
     }
+
 }
