@@ -1,7 +1,6 @@
 package com.squarecross.photoalbum.controller;
 
 
-import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import com.squarecross.photoalbum.service.PhotoService;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -84,7 +82,7 @@ public class PhotoController {
                     List<File> fileList = photoService.getImageFiles(photoIds);
 
                     // 루프를 돌며 ZipOutputStream에 파일들을 계속 주입해준다.
-                    for(File file : fileList) {
+                    for (File file : fileList) {
                         zipOut.putNextEntry(new ZipEntry(file.getName()));
                         fis = new FileInputStream(file);
 
@@ -126,6 +124,7 @@ public class PhotoController {
         }
 
     }
+
     /**
      * 사진 목록 불러오기
      */
@@ -135,13 +134,22 @@ public class PhotoController {
             @RequestParam(required = false, defaultValue = "") final String keyword, //사진에 들어가는 글자
             @RequestParam(required = false, defaultValue = "byDate") final String sort,
             @RequestParam(required = false, defaultValue = "") final String orderBy) {
-        List<PhotoDto> photoDtos = photoService.getPhotoList(albumId,keyword, sort, orderBy);
+        List<PhotoDto> photoDtos = photoService.getPhotoList(albumId, keyword, sort, orderBy);
         return new ResponseEntity<>(photoDtos, HttpStatus.OK);
     }
-    @GetMapping("/downloads")
-    public long downloadPhotos( //출력은 없습니다 void
-                                @RequestParam("photoIds") Long[] photoIds //쿼리 파라미터로 다운받을 사진 Id를 받습니다.
-    ) {
-        return photoIds.length;
+
+    /**
+     * 사진 삭제하기
+     */
+    @DeleteMapping()
+    public ResponseEntity<List<PhotoDto>> deleteAlbum(
+            @PathVariable("albumId") final long albumId,
+            @RequestParam("photoIds") final List<Long> photoIds) {
+        List<PhotoDto> photoDtos = photoService.deleteAndGetPhotoList(photoIds, albumId);
+        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
     }
+
+    /**
+     * 사진 옮기기
+     */
 }

@@ -217,7 +217,33 @@ public class PhotoService {
         return PhotoMapper.convertToDtoList(photos);
 
     }
-
-
+    /**
+     * 포토 삭제
+     */
+    public void deletePhotos(List<Long> photoIds) {
+        for (Long photoId : photoIds) {
+            Optional<Photo> photo = photoRepository.findById(photoId);
+            if (photo.isEmpty()) {
+                throw new NoSuchElementException(String.format("Photo Id'%d'가 존재하지 않습니다.", photoId));
+            }
+            Photo getPhoto = photo.get();
+            photoRepository.delete(getPhoto);
+        }
+    }
+    /**
+     * 단순 포토 목록 불러오기
+     */
+    public List<PhotoDto> getPhotoListByAlbumId(Long albumId){
+        List<Photo> photos = photoRepository.findPhotosByAlbum_AlbumId(albumId);
+        return PhotoMapper.convertToDtoList(photos);
+    }
+    /**
+     * 사진 Id로 앨범 조회. 받은 파라미터 id로 사진 삭제. 해당 앨범 사진리스트 반환
+     */
+    public List<PhotoDto> deleteAndGetPhotoList(List<Long> photoIds,Long albumId){
+        deletePhotos(photoIds);
+        List<PhotoDto> results = getPhotoListByAlbumId(albumId);
+        return results;
+    }
 //
 }
