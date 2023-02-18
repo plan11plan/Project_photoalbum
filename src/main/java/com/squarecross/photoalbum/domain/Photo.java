@@ -34,4 +34,7 @@ public class Photo {
     @JoinColumn(name="album_id")
     @JsonIgnore
     private Album album;
+
+
+
 }

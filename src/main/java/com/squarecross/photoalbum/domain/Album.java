@@ -62,4 +62,6 @@ public class Album {
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
+
+
 }

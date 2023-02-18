@@ -141,9 +141,9 @@ public class PhotoController {
     /**
      * 사진 삭제하기
      */
-    @DeleteMapping()
+    @DeleteMapping("")
     public ResponseEntity<List<PhotoDto>> deleteAlbum(
-            @PathVariable("albumId") final long albumId,
+            @PathVariable("albumId") final Long albumId,
             @RequestParam("photoIds") final List<Long> photoIds) {
         List<PhotoDto> photoDtos = photoService.deleteAndGetPhotoList(photoIds, albumId);
         return new ResponseEntity<>(photoDtos, HttpStatus.OK);
