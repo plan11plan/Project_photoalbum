@@ -42,9 +42,9 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<?> createAlbum(@Valid @RequestBody final AlbumDto albumDto, BindingResult bindingResult)
             throws IOException {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return new ResponseEntity<>((Map<BindingResult, String>) bindingResult,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((Map<BindingResult, String>) bindingResult, HttpStatus.BAD_REQUEST);
 
         }
         AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
@@ -56,9 +56,9 @@ public class AlbumController {
      */
     @GetMapping("")
     public List<AlbumDto> getAlbumList(
-            @RequestParam(value = "keyword",required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
-            @RequestParam(value = "sort",required = false, defaultValue = "byDate") final String sort,
-            @RequestParam(value = "orderBy",required = false, defaultValue = "") final String orderBy) {
+            @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
+            @RequestParam(required = false, defaultValue = "byDate") final String sort,
+            @RequestParam(required = false, defaultValue = "") final String orderBy) {
         List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
         return albumDtos;
     }
@@ -67,16 +67,17 @@ public class AlbumController {
      * 앨범명 수정
      */
     @PutMapping("/{albumId}")
-    public AlbumDto updateAlbum(@PathVariable("albumId") final long albumId,
-                                                @Valid @RequestBody final AlbumDto albumDto){
+    public AlbumDto updateAlbum(@PathVariable final long albumId,
+                                @Valid @RequestBody final AlbumDto albumDto) {
         AlbumDto result = albumService.changeName(albumId, albumDto);
         return result;
     }
+
     /**
      * 앨범 삭제
      */
     @DeleteMapping("/{albumId}")
-    public void deleteAlbum(@PathVariable("albumId") final long albumId){
+    public void deleteAlbum(@PathVariable final long albumId) {
         albumService.deleteAlbum(albumId);
     }//
 
