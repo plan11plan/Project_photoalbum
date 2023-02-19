@@ -32,17 +32,17 @@ public class PhotoController {
      * 사진 상세정보 API
      */
     @GetMapping("/{photoId}")
-    public ResponseEntity<PhotoDto> getPhotoInfo(@PathVariable("albumId") final long albumId,
+    public PhotoDto getPhotoInfo(@PathVariable("albumId") final long albumId,
                                                  @PathVariable("photoId") final long photoId) {
         PhotoDto photoDto = photoService.getPhoto(albumId, photoId);
-        return new ResponseEntity<>(photoDto, HttpStatus.OK);
+        return photoDto;
     }
 
     /**
      * 사진 업로드 API
      */
     @PostMapping("")
-    public ResponseEntity<List<PhotoDto>> uploadPhotos(
+    public List<PhotoDto> uploadPhotos(
             @PathVariable("albumId") final long albumId,
             @RequestParam("photos") MultipartFile[] files) throws IOException {
         List<PhotoDto> photos = new ArrayList<>();
@@ -50,7 +50,7 @@ public class PhotoController {
             PhotoDto photoDto = photoService.savePhoto(file, albumId);
             photos.add(photoDto);
         }
-        return new ResponseEntity<>(photos, HttpStatus.OK);
+        return photos;
     }
 
     /**
@@ -130,38 +130,45 @@ public class PhotoController {
      * 사진 목록 불러오기
      */
     @GetMapping("")
-    public ResponseEntity<List<PhotoDto>> getList(
+    public List<PhotoDto> getList(
             @PathVariable("albumId") final long albumId,
             @RequestParam(required = false, defaultValue = "") final String keyword, //사진에 들어가는 글자
             @RequestParam(required = false, defaultValue = "byDate") final String sort,
             @RequestParam(required = false, defaultValue = "") final String orderBy) {
         List<PhotoDto> photoDtos = photoService.getPhotoList(albumId, keyword, sort, orderBy);
-        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
+        return photoDtos;
     }
 
     /**
-     * 사진 삭제하기
+     * 사진 삭제하기  ..@RequestBody ? -> Body, @RequestParam? -> Param . 포스트맨 참고
+     * //@RequestBody는 생략 불가. 생략해버리면 ModelAttribute로 여김.
+     *
+     * 스프링은 @ModelAttribute,@RequestParam 해당 생략시 다음과 같은 규칙을 적용한다.
+     * String, int ,Integer 같은 단순 타입 = @Requestparam
+     * 나머지 = @ModelAttribute
+     *
+     *
      */
     @DeleteMapping("")
-    public ResponseEntity<List<PhotoDto>> deleteAlbum(
+    public List<PhotoDto> deleteAlbum(
             @PathVariable("albumId") final Long albumId,
             @RequestParam("photoIds") final List<Long> photoIds) {
         List<PhotoDto> photoDtos = photoService.deleteAndGetPhotoList(photoIds, albumId);
-        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
+        return photoDtos;
     }
 
     /**
      * 사진 옮기기
      */
     @PutMapping("/move")
-    public ResponseEntity<List<PhotoDto>> movePhotos(
+    public List<PhotoDto> movePhotos(
             @PathVariable("albumId") final Long albumId,
             @RequestParam("fromAlbumId") final Long fromAlbumId,
             @RequestParam("toAlbumId") final Long toAlbumId,
             @RequestParam("photoIds") final List<Long> photoIds) {
 
         List<PhotoDto> photoDtos = photoService.movePhoto(fromAlbumId, toAlbumId, photoIds);
-        return new ResponseEntity<>(photoDtos, HttpStatus.OK);
+        return photoDtos;
 
     }
 

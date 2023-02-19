@@ -23,9 +23,9 @@ public class AlbumController {
     private final AlbumService albumService;
 
     @GetMapping("/{albumId}")
-    public ResponseEntity<AlbumDto> getAlbum(@PathVariable("albumId") final long albumId) {
+    public AlbumDto getAlbum(@PathVariable("albumId") final long albumId) {
         AlbumDto album = albumService.getAlbum(albumId);
-        return new ResponseEntity<>(album, HttpStatus.OK);
+        return album;
     }
 
 
@@ -55,30 +55,29 @@ public class AlbumController {
      * 앨범 목록 조회
      */
     @GetMapping("")
-    public ResponseEntity<List<AlbumDto>> getAlbumList(
+    public List<AlbumDto> getAlbumList(
             @RequestParam(value = "keyword",required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
             @RequestParam(value = "sort",required = false, defaultValue = "byDate") final String sort,
             @RequestParam(value = "orderBy",required = false, defaultValue = "") final String orderBy) {
         List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
-        return new ResponseEntity<>(albumDtos, HttpStatus.OK);
+        return albumDtos;
     }
 
     /**
      * 앨범명 수정
      */
     @PutMapping("/{albumId}")
-    public ResponseEntity<AlbumDto> updateAlbum(@PathVariable("albumId") final long albumId,
+    public AlbumDto updateAlbum(@PathVariable("albumId") final long albumId,
                                                 @Valid @RequestBody final AlbumDto albumDto){
         AlbumDto result = albumService.changeName(albumId, albumDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return result;
     }
     /**
      * 앨범 삭제
      */
     @DeleteMapping("/{albumId}")
-    public ResponseEntity<Void> deleteAlbum(@PathVariable("albumId") final long albumId){
+    public void deleteAlbum(@PathVariable("albumId") final long albumId){
         albumService.deleteAlbum(albumId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }//
 
 }
