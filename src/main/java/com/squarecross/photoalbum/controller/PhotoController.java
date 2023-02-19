@@ -2,6 +2,7 @@ package com.squarecross.photoalbum.controller;
 
 
 import com.squarecross.photoalbum.domain.Photo;
+import com.squarecross.photoalbum.dto.MovePhotoDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import com.squarecross.photoalbum.service.PhotoService;
@@ -30,6 +31,7 @@ public class PhotoController {
     /**
      * 사진 상세정보 API
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{photoId}")
     public PhotoDto getPhotoInfo(@PathVariable final long albumId,
                                  @PathVariable final long photoId) {
@@ -40,6 +42,7 @@ public class PhotoController {
     /**
      * 사진 업로드 API
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("")
     public List<PhotoDto> uploadPhotos(
             @PathVariable final long albumId,
@@ -55,6 +58,7 @@ public class PhotoController {
     /**
      * 사진 다운로드
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/download")
     public void downloadPhotos( //출력은 없습니다 void
                                 @RequestParam Long[] photoIds, //쿼리 파라미터로 다운받을 사진 Id를 받습니다.
@@ -128,6 +132,7 @@ public class PhotoController {
     /**
      * 사진 목록 불러오기
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public List<PhotoDto> getList(
             @PathVariable final long albumId,
@@ -146,6 +151,7 @@ public class PhotoController {
      * String, int ,Integer 같은 단순 타입 = @Requestparam
      * 나머지 = @ModelAttribute
      */
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("")
     public List<PhotoDto> deleteAlbum(
             @PathVariable("albumId") final Long albumId,
@@ -157,14 +163,18 @@ public class PhotoController {
     /**
      * 사진 옮기기
      */
-    @PutMapping("/move")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/move")
     public List<PhotoDto> movePhotos(
             @PathVariable("albumId") final Long albumId,
-            @RequestParam("fromAlbumId") final Long fromAlbumId,
-            @RequestParam("toAlbumId") final Long toAlbumId,
-            @RequestParam("photoIds") final List<Long> photoIds) {
+            @RequestBody MovePhotoDto movePhotoDto)
+//            @RequestParam("fromAlbumId") final Long fromAlbumId,
+//            @RequestParam("toAlbumId") final Long toAlbumId,
+//            @RequestParam("photoIds") final List<Long> photoIds)
+    {
 
-        List<PhotoDto> photoDtos = photoService.movePhoto(fromAlbumId, toAlbumId, photoIds);
+        List<PhotoDto> photoDtos = photoService.movePhoto(
+                movePhotoDto.getFromAlbumId(), movePhotoDto.getToAlbumId(),movePhotoDto.getPhotoIds());
         return photoDtos;
 
     }

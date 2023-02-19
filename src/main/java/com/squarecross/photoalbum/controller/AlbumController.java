@@ -22,6 +22,7 @@ import java.util.Map;
 public class AlbumController {
     private final AlbumService albumService;
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{albumId}")
     public AlbumDto getAlbum(@PathVariable("albumId") final long albumId) {
         AlbumDto album = albumService.getAlbum(albumId);
@@ -54,6 +55,7 @@ public class AlbumController {
     /**
      * 앨범 목록 조회
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public List<AlbumDto> getAlbumList(
             @RequestParam(required = false, defaultValue = "") final String keyword, //앨범에 들어가는 글자
@@ -66,6 +68,7 @@ public class AlbumController {
     /**
      * 앨범명 수정
      */
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{albumId}")
     public AlbumDto updateAlbum(@PathVariable final long albumId,
                                 @Valid @RequestBody final AlbumDto albumDto) {
@@ -76,6 +79,7 @@ public class AlbumController {
     /**
      * 앨범 삭제
      */
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{albumId}")
     public void deleteAlbum(@PathVariable final long albumId) {
         albumService.deleteAlbum(albumId);
