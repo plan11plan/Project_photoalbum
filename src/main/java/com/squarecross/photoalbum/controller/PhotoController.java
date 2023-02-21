@@ -47,6 +47,8 @@ public class PhotoController {
     public List<PhotoDto> uploadPhotos(
             @PathVariable final long albumId,
             @RequestParam("photos") MultipartFile[] files) throws IOException {
+        //HttpServletRequest- > MultipartHttpServletRequest
+        //그런데 이후에
         List<PhotoDto> photos = new ArrayList<>();
         for (MultipartFile file : files) {
             PhotoDto photoDto = photoService.savePhoto(file, albumId);
