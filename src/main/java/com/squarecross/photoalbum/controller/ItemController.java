@@ -10,15 +10,22 @@ import com.squarecross.photoalbum.service.ItemService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -26,6 +33,7 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemRepository itemRepository;
     private final FileStore fileStore;
 
     @GetMapping("/items/new")
@@ -43,5 +51,37 @@ public class ItemController {
 
         redirectAttributes.addAttribute("itemId",getId);
         return "redirect:/items/{itemId}";
+    }
+    @GetMapping("/items/{id}")
+    public String items(@PathVariable Long id, Model model){
+        Item item = itemRepository.findById(id).get();
+        System.out.println("찾은아이디"+id);
+//        System.out.println("파일이름"+item.getAttachFile().getUploadFileName());
+        model.addAttribute("item",item);
+        return "item-view";
+    }
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        UrlResource urlResource = new UrlResource("file:" + fileStore.getFullPath(filename));
+        return urlResource;
+    }
+
+    @GetMapping("/attach/{itemId}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable Long itemId)
+            throws MalformedURLException {
+        Item item = itemRepository.findById(itemId).get();
+        String storeFileName = item.getAttachFile().getStoreFileName();
+        String uploadFileName = item.getAttachFile().getUploadFileName();
+        UrlResource resource = new UrlResource("file:" +
+                fileStore.getFullPath(storeFileName));
+        log.info("uploadFileName={}", uploadFileName);
+        String encodedUploadFileName = UriUtils.encode(uploadFileName,
+                StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" +
+                encodedUploadFileName + "\"";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
     }
 }
