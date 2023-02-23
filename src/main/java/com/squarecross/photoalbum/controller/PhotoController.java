@@ -63,7 +63,8 @@ public class PhotoController {
             for (MultipartFile file : files) {
                 PhotoDto photoDto = photoService.savePhoto(file, albumId);
                 photos.add(photoDto);
-                log.info("저장한 photo id ={}",photoDto.getAlbumId());
+                log.info("저장한 Album id ={}",photoDto.getAlbumId());
+                log.info("저장한 photo id ={}",photoDto.getPhotoId());
                 log.info("저장한 photo 이름 ={}",photoDto.getFileName());
             }
         }

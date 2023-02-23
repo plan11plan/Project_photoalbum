@@ -12,6 +12,8 @@ public class PhotoMapper {
 
     public static PhotoDto convertToDto(Photo photo){
         PhotoDto photoDto = new PhotoDto();
+        photoDto.setAlbumId(photo.getPhotoId());
+
         photoDto.setPhotoId(photo.getPhotoId());
         photoDto.setFileName(photo.getFileName());
         photoDto.setOriginalUrl(photo.getOriginalUrl());

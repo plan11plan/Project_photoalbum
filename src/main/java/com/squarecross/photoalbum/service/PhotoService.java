@@ -82,6 +82,8 @@ public class PhotoService {
         if (result.isEmpty()) {
             throw new EntityNotFoundException("사진 업로드 중이신데...앨범이 존재하지 않습니다");
         }
+        Album findAlbum = result.get();
+        log.info("일단 옵셔널로 가져온 앨범 아이디={}.이름={}",findAlbum.getAlbumId(),findAlbum.getAlbumName());
         String fileName = file.getOriginalFilename();
         int fileSize = (int) file.getSize(); //long은 64바이트 int는 32바이트다. int로 나타낼 수 있는 최대는 대략 2GB인데
         //그렇게 커질 일 없으니 내맘대로 int로 변환
@@ -91,17 +93,27 @@ public class PhotoService {
          * 3.다른 앨범에는 같은 파일명 있어도 됌.
          * */
         //DB에 입력된 앨범안에 같은 파일명이 있는지 체크.
+        log.info("DB에 파일 이름, 앨범아이디 검증시작 현재 파일이름={}.앨범아이디={}",fileName,albumId);
         fileName = getNextFileName(fileName, albumId);
         //다시 메인 메서드로 돌아와서 saveFile 메서드를 추가해서 사진을 저장합니다
+        log.info("DB에 저장할 앨범아이디 현재 파일이름={}",fileName);
+
         saveFile(file, albumId, fileName);
+        log.info("saveFile 완료");
+
         // DB에 사진 레코드 생성 & 생성된 앨범 DTO 반환
         Photo photo = new Photo();
+        log.info("포토에 넣어줄 옵셔널로 가져온 앨범 아이디={}.이름={}",findAlbum.getAlbumId(),findAlbum.getAlbumName());
+
         photo.setOriginalUrl("/photos/original/" + albumId + "/" + fileName);
         photo.setThumbUrl("/photos/thumb/" + albumId + "/" + fileName);
         photo.setFileName(fileName);
         photo.setFileSize(fileSize);
-        photo.setAlbum(result.get());
+        photo.setAlbum(findAlbum);
         Photo createdPhoto = photoRepository.save(photo);
+        log.info("생성된 포토 아아디 ={}",createdPhoto.getPhotoId());
+        log.info("생성된 앨범 아아디 ={}",createdPhoto.getAlbum().getAlbumId());
+        log.info("서비스 savePhoto 이상없음");
         return PhotoMapper.convertToDto(createdPhoto);
 
     }
