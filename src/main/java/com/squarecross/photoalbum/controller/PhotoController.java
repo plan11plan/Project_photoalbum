@@ -7,6 +7,7 @@ import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.AlbumService;
 import com.squarecross.photoalbum.service.PhotoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.zip.ZipOutputStream;
 @RestController
 @RequestMapping("/albums/{albumId}/photos")
 @RequiredArgsConstructor
+@Slf4j
 public class PhotoController {
 
     private final PhotoService photoService;
@@ -46,14 +49,23 @@ public class PhotoController {
     @PostMapping("")
     public List<PhotoDto> uploadPhotos(
             @PathVariable final long albumId,
-            @RequestParam("photos") MultipartFile[] files) throws IOException {
+            @RequestParam("photos") MultipartFile[] files,
+            HttpServletRequest request) throws IOException {
         //HttpServletRequest- > MultipartHttpServletRequest
         //그런데 이후에
+        log.info("request={}", request);
+        log.info("albumId 출력={}", albumId);
+        log.info("multipartFile[] 리스트={}",files);
+
         List<PhotoDto> photos = new ArrayList<>();
-        for (MultipartFile file : files) {
-            PhotoDto photoDto = photoService.savePhoto(file, albumId);
-            photos.add(photoDto);
+
+        if(files.length!=0){
+            for (MultipartFile file : files) {
+                PhotoDto photoDto = photoService.savePhoto(file, albumId);
+                photos.add(photoDto);
+            }
         }
+
         return photos;
     }
 
