@@ -61,14 +61,15 @@ public class PhotoController {
 
         if(files.length!=0){
             for (MultipartFile file : files) {
+
                 PhotoDto photoDto = photoService.savePhoto(file, albumId);
                 photos.add(photoDto);
-                log.info("저장한 Album id ={}",photoDto.getAlbumId());
-                log.info("저장한 photo id ={}",photoDto.getPhotoId());
-                log.info("저장한 photo 이름 ={}",photoDto.getFileName());
+                log.info("컨트롤) 저장한 Album id ={}",photoDto.getAlbumId());
+                log.info("컨트롤)저장한 photo id ={}",photoDto.getPhotoId());
+                log.info("컨트롤)저장한 photo 이름 ={}",photoDto.getFileName());
             }
         }
-
+        log.info("사진 리턴합니다.");
         return photos;
     }
 
@@ -172,7 +173,8 @@ public class PhotoController {
     @DeleteMapping("")
     public List<PhotoDto> deleteAlbum(
             @PathVariable("albumId") final Long albumId,
-            @RequestBody final List<Long> photoIds) {
+            @RequestParam final List<Long> photoIds) {
+        log.info("Long[] 길이={}",photoIds.size());
         List<PhotoDto> photoDtos = photoService.deleteAndGetPhotoList(photoIds, albumId);
         return photoDtos;
     }
