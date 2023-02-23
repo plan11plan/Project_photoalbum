@@ -9,6 +9,7 @@ import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static com.squarecross.photoalbum.FileExtFilter.badFileExtIsReturnException;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -71,13 +73,14 @@ public class PhotoService {
      */
     public PhotoDto savePhoto(MultipartFile file, Long albumId) throws IOException {
         /** 이미지 검증 로직 */
-
+        log.info("서비스 로직에 들어왔습니다. 파일이름={},앨범아이디={}",file.getOriginalFilename(),albumId);
         badFileExtIsReturnException(file);
+        log.info("확장자 검증 완료. 파일이름={}",file.getOriginalFilename());
 
         /**앨범아이디 체크 및 파일 기본정보 추출*/
         Optional<Album> result = albumRepository.findById(albumId);
         if (result.isEmpty()) {
-            throw new EntityNotFoundException("앨범이 존재하지 않습니다");
+            throw new EntityNotFoundException("사진 업로드 중이신데...앨범이 존재하지 않습니다");
         }
         String fileName = file.getOriginalFilename();
         int fileSize = (int) file.getSize(); //long은 64바이트 int는 32바이트다. int로 나타낼 수 있는 최대는 대략 2GB인데
@@ -145,7 +148,7 @@ public class PhotoService {
 
             //Resize된 썸네일 이미지를 저장합니다.
             File thumbFile = new File(thumb_path + "/" + filePath);
-            String ext = StringUtils.getFilenameExtension(fileName);
+            String ext = StringUtils.getFilenameExtension(fileName); //확장자.
             if (ext == null) {
                 throw new IllegalArgumentException("No Extention");
             }

@@ -55,7 +55,7 @@ public class PhotoController {
         //그런데 이후에
         log.info("request={}", request);
         log.info("albumId 출력={}", albumId);
-        log.info("multipartFile[] 리스트={}",files);
+        log.info("multipartFile[] 리스트 길이={}",files.length);
 
         List<PhotoDto> photos = new ArrayList<>();
 
@@ -63,6 +63,8 @@ public class PhotoController {
             for (MultipartFile file : files) {
                 PhotoDto photoDto = photoService.savePhoto(file, albumId);
                 photos.add(photoDto);
+                log.info("저장한 photo id ={}",photoDto.getAlbumId());
+                log.info("저장한 photo 이름 ={}",photoDto.getFileName());
             }
         }
 
