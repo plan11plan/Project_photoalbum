@@ -49,8 +49,7 @@ public class PhotoController {
     @PostMapping("")
     public List<PhotoDto> uploadPhotos(
             @PathVariable final long albumId,
-            @RequestParam("photos") MultipartFile[] files,
-            HttpServletRequest request) throws IOException {
+            @RequestParam("photos") MultipartFile[] files, HttpServletRequest request) throws IOException {
         //HttpServletRequest- > MultipartHttpServletRequest
         //그런데 이후에
         log.info("request={}", request);
@@ -174,7 +173,6 @@ public class PhotoController {
     public List<PhotoDto> deleteAlbum(
             @PathVariable("albumId") final Long albumId,
             @RequestParam final List<Long> photoIds) {
-        log.info("Long[] 길이={}",photoIds.size());
         List<PhotoDto> photoDtos = photoService.deleteAndGetPhotoList(photoIds, albumId);
         return photoDtos;
     }
