@@ -43,7 +43,7 @@ public class PhotoController {
     }
 
     /**
-     * 사진 업로드 API
+     * 사진 업로드 API . 바이너리 코드 필터링까지 필요
      */
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("")
