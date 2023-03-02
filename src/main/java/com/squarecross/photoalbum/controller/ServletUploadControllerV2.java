@@ -24,7 +24,8 @@ public class ServletUploadControllerV2 {
 
     @Value("${file.dir}")
     private String fileDir;
-    @GetMapping("upload")
+
+    @GetMapping("/upload")
     public String newFile(){
         return "upload-form";
     }
@@ -36,7 +37,6 @@ public class ServletUploadControllerV2 {
         //여기서 중요합니다.
         Collection<Part> parts = request.getParts(); //part가 ---xxx 파트마다 받을 수 있음.
         log.info("parts={}",parts);
-
         for(Part part : parts) {
             log.info("=== PART ===");
             log.info("name={}", part.getName());
@@ -59,7 +59,6 @@ public class ServletUploadControllerV2 {
                 log.info("파일 저장 fullPath={}",fullPath);
                 part.write(fullPath); //경로를 넣어주면 저장됨.
             }
-
         }
         return "upload-form";
     }
