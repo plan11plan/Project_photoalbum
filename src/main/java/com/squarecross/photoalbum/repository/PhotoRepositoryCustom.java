@@ -13,4 +13,5 @@ public interface PhotoRepositoryCustom {
     List<Photo> tasc(Long albumId, String fileName);
     List<Photo> findPhotosByPhotoIdIn(List<Long> photoId);
 
-    }
+
+}

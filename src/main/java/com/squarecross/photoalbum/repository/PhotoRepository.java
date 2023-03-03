@@ -23,6 +23,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Long>,PhotoReposit
     Optional<Photo> findByFileNameAndAlbum_AlbumId(String photoName, Long albumId);
 
     List<Photo> findByPhotoId(Long[] photoId);
+    List<Photo> findByPhotoIdIn(Long[] photoId);
 
 
 //    //앨범에 있는 사진 목록 가져오기

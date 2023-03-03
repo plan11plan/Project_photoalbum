@@ -190,7 +190,7 @@ public class PhotoService {
     }
 
     public List<File> getImageFiles(Long[] photoIds) {
-        List<Photo> result = photoRepository.findByPhotoId(photoIds);
+        List<Photo> result = photoRepository.findByPhotoIdIn(photoIds);
         // DB에 저장되어 있는 파일 목록을 읽어온다.
         for (Photo photo : result) {
             if (photo == null) {
@@ -230,7 +230,6 @@ public class PhotoService {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
         }
         return PhotoMapper.convertToDtoList(photos);
-
     }
     /**
      * 포토 삭제

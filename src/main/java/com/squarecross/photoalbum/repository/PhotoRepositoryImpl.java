@@ -47,4 +47,7 @@ public class PhotoRepositoryImpl implements PhotoRepositoryCustom{
                 .getResultList();
     }
 
+
+
+
 }
